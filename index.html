@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en" ng-app="vr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Lethusang - Terminal</title>
+    <meta name="description" content="Lethusang's Website" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Special+Elite"
+    />
+    <style>
+      /* Catppuccin Mocha Color Palette */
+      :root {
+        --rosewater: #f5e0dc;
+        --flamingo: #f2cdcd;
+        --pink: #f5c2e7;
+        --mauve: #cba6f7;
+        --red: #f38ba8;
+        --maroon: #eba0ac;
+        --peach: #fab387;
+        --yellow: #f9e2af;
+        --green: #a6e3a1;
+        --teal: #94e2d5;
+        --sky: #89dceb;
+        --sapphire: #74c7ec;
+        --blue: #89b4fa;
+        --lavender: #b4befe;
+        --text: #cdd6f4;
+        --subtext1: #bac2de;
+        --subtext0: #a6adc8;
+        --overlay2: #9399b2;
+        --overlay1: #7f849c;
+        --overlay0: #6c7086;
+        --surface2: #585b70;
+        --surface1: #45475a;
+        --surface0: #313244;
+        --base: #1e1e2e;
+        --mantle: #181825;
+        --crust: #11111b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background-color: var(--base);
+        color: var(--text);
+        font-family: "Special Elite", "Courier New", monospace;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Terminal Header */
+      .vr-header {
+        margin-bottom: 30px;
+        padding: 20px 0;
+        border-bottom: 2px solid var(--surface1);
+      }
+
+      .vr-logo {
+        color: var(--green);
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin: 0;
+        text-shadow: 0 0 10px rgba(166, 227, 161, 0.3);
+      }
+
+      .vr-logo::after {
+        content: "_";
+        animation: blink 1s infinite;
+        color: var(--text);
+      }
+
+      /* Terminal Content Area */
+      .terminal-content {
+        flex: 1;
+        background-color: var(--mantle);
+        border: 1px solid var(--surface1);
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .terminal-line {
+        margin-bottom: 10px;
+        font-family: "Special Elite", "Courier New", monospace;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .terminal-prompt {
+        color: var(--green);
+        font-weight: bold;
+        margin-right: 10px;
+      }
+
+      .terminal-command {
+        color: var(--blue);
+        margin-right: 10px;
+      }
+
+      .terminal-output {
+        color: var(--text);
+        margin-left: 20px;
+        margin-top: 5px;
+        white-space: pre-line;
+        width: 100%;
+      }
+
+      .terminal-error {
+        color: var(--red);
+        margin-left: 20px;
+      }
+
+      .terminal-success {
+        color: var(--green);
+        margin-left: 20px;
+      }
+
+      .cursor {
+        animation: blink 1s infinite;
+        color: var(--text);
+        font-weight: bold;
+      }
+
+      /* Links */
+      a {
+        color: var(--blue);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      a:hover {
+        color: var(--sky);
+        text-shadow: 0 0 5px rgba(137, 220, 235, 0.5);
+      }
+
+      /* Footer */
+      footer {
+        margin-top: auto;
+        padding: 20px 0;
+        border-top: 1px solid var(--surface1);
+      }
+
+      .vr-social-icons {
+        text-align: center;
+      }
+
+      .vr-social-icons ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        flex-wrap: wrap;
+      }
+
+      .vr-social-icons li {
+        display: inline-block;
+      }
+
+      .vr-social-icons a {
+        color: var(--subtext1);
+        transition: all 0.3s ease;
+        display: block;
+        padding: 10px;
+        border-radius: 8px;
+      }
+
+      .vr-social-icons a:hover {
+        transform: translateY(-2px);
+        background-color: var(--surface0);
+      }
+
+      .vr-github-icon a:hover {
+        color: var(--text);
+        box-shadow: 0 4px 15px rgba(205, 214, 244, 0.2);
+      }
+
+      .vr-email-icon a:hover {
+        color: var(--green);
+        box-shadow: 0 4px 15px rgba(166, 227, 161, 0.2);
+      }
+
+      /* Animations */
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--base);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--surface1);
+        border-radius: 4px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--surface2);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        .vr-logo {
+          font-size: 2rem;
+        }
+
+        .vr-social-icons ul {
+          gap: 20px;
+        }
+
+        .terminal-content {
+          padding: 15px;
+        }
+
+        .terminal-line {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .terminal-prompt {
+          margin-right: 0;
+          margin-bottom: 5px;
+        }
+
+        .terminal-command {
+          margin-right: 0;
+          margin-left: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body ng-controller="Ctrl">
+    <div class="container">
+      <div class="vr-header">
+        <div class="row">
+          <div class="col-md-12">
+            <h1 class="vr-logo">> lethusang</h1>
+          </div>
+        </div>
+      </div>
+
+      <div class="terminal-content">
+        <div class="terminal-line">
+          <span class="terminal-prompt">lethusang@terminal:~$</span>
+          <span class="terminal-command" id="typing-command"></span>
+          <span class="cursor">_</span>
+        </div>
+      </div>
+
+      <footer>
+        <div class="vr-social-icons">
+          <ul class="list-inline">
+            <li class="vr-github-icon">
+              <a href="https://github.com/Lethusang" target="_blank">
+                <i class="fa fa-github fa-2x"></i>
+              </a>
+            </li>
+            <li class="vr-email-icon">
+              <a href="mailto:work@lethusang.com">
+                <i class="fa fa-envelope fa-2x"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.3/angular.min.js"></script>
+    <script>
+      angular.module("vr", []).controller("Ctrl", function ($scope, $timeout) {
+        $scope.currentYear = new Date().getFullYear();
+
+        // Commands that will be typed out
+        const commands = [
+          "hello world!",
+          "website still under developement, maybe",
+          "contact link below, lets talk",
+        ];
+
+        let currentCommandIndex = 0;
+        let currentCharIndex = 0;
+        let isDeleting = false;
+
+        function typeCommand() {
+          const commandElement = document.getElementById("typing-command");
+          if (!commandElement) return;
+
+          const currentCommand = commands[currentCommandIndex];
+
+          if (!isDeleting && currentCharIndex < currentCommand.length) {
+            // Typing forward
+            commandElement.textContent = currentCommand.substring(
+              0,
+              currentCharIndex + 1,
+            );
+            currentCharIndex++;
+            $timeout(typeCommand, 100);
+          } else if (
+            !isDeleting &&
+            currentCharIndex === currentCommand.length
+          ) {
+            // Pause at end of command
+            $timeout(() => {
+              isDeleting = true;
+              typeCommand();
+            }, 2000);
+          } else if (isDeleting && currentCharIndex > 0) {
+            // Deleting backward
+            commandElement.textContent = currentCommand.substring(
+              0,
+              currentCharIndex - 1,
+            );
+            currentCharIndex--;
+            $timeout(typeCommand, 50);
+          } else if (isDeleting && currentCharIndex === 0) {
+            // Move to next command
+            isDeleting = false;
+            currentCommandIndex = (currentCommandIndex + 1) % commands.length;
+            $timeout(typeCommand, 500);
+          }
+        }
+
+        // Start typing animation after a short delay
+        $timeout(() => {
+          typeCommand();
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
